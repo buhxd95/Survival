@@ -293,7 +293,13 @@ function init(){
         } else {
             jogador.andar();
         }
-
+		
+		if(info && !pause){//informaçoes adicionais fora do pause
+            ctx.fillStyle = 'red';
+            ctx.fillText("Kills: "+zumbisMortos,5,50);
+            ctx.fillText("Kills faltando: "+(calcRound(roundAtual).nzt-zumbisMortos),5,80);
+        }
+		
         var img = new Image();
         img.src = jogador.imagem;
         ctx.drawImage(img,jogador.x,jogador.y); //criaçao do jogador
@@ -407,12 +413,6 @@ function init(){
         ctx.fillStyle = '#FF0000';
         ctx.font = '75px Times New Roman';
         ctx.fillText(roundAtual,5,h-10);	//escrever o round atual do jogador
-
-		if(info && !pause){//informaçoes adicionais fora do pause
-            ctx.fillStyle = 'red';
-            ctx.fillText("Kills: "+zumbisMortos,5,50);
-            ctx.fillText("Kills faltando: "+(calcRound(roundAtual).nzt-zumbisMortos),5,80);
-        }
     }
 
     setInterval(desenhar, 10);	//colocar a função em intervalo infinitamente, para que de impressão de movimento

@@ -1,0 +1,141 @@
+h6 {
+	text-align:center;
+}
+
+.container #jogar {
+    position: absolute;
+    top: 39%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: Transparent;
+	background-repeat:no-repeat;
+    font-size: 1.6vw;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+	overflow: hidden;
+	text-decoration: none;
+}
+
+.intro{
+	text-indent: 50px;
+	height: 120px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+}
+
+#jogar:focus,#jogar:active {
+	outline:0 !important;
+}
+
+#round {
+	transform: translate(13%, -190%);
+	position: absolute;
+	width: 5.18vw;
+	height:3.8vw;
+}
+
+key {
+	display: inline-block;
+    margin: 0 .1em;
+    padding: .1em .6em;
+    font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #242729;
+    text-shadow: 0 1px 0 #FFF;
+    background-color: #e1e3e5;
+    border: 1px solid #adb3b9;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
+    white-space: nowrap;
+	cursor:pointer;
+}
+
+.key	{
+    width: 25%;
+}
+
+.js	{
+	width:25%;
+
+}
+.key2 {
+	position:absolute;
+	width:25%;
+	left:27%;
+	top:50.4%;
+}
+.cab {
+	color: white;
+	height: 75px;
+    width: 100%;
+	background-image: url("../imagens/horda.gif");
+	background-position: left,top;
+	background-repeat: no-repeat;
+	background-size: 1500px;
+}
+
+.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+	color:white;
+}
+
+body {
+	overflow:hidden;
+}
+
+li {
+	float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.ativo) {
+    background-color: #111;
+}
+
+.ativo {
+    background-color: #3366cc;
+}
+
+.esp {
+	height: 60px;
+    width: 100%;	
+}
+
+table {
+    width:30%;
+	position:absolute;
+	bottom:1%;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    font-weight: bold
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+	background-color:#e6e6e6;
+}

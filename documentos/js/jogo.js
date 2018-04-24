@@ -19,13 +19,78 @@ function init(){
     var hpPorRound = 5;
     var sair = false;
     var info = false;
+    var contar = 0;
+
+    var teclas = {
+        tecla65: false,
+        tecla37: false,
+        tecla68: false,
+        tecla39: false,
+        tecla87: false,
+        tecla38: false,
+        tecla83: false,
+        tecla40: false
+    };
 
     var jogador = { //objeto jogador
         x: Math.round(w/2-25),
         y: Math.round(h/2-50),
         imagem: "documentos/imagens/leste1.png",
         hp:100,
-        vivo: function(){return this.hp>0  ? true : false;}
+        direcao: 4,
+        vivo: function(){return this.hp>0  ? true : false;},
+        andar: function() {
+            var parado = true;
+            if(teclas.tecla65 || teclas.tecla37){//tecla A ou seta pra esquerda
+                for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){//a partir do round 20 se o jogador estiver com a vida inicial mais 80% do hp bonus por round, sua velocidade dobrará
+                    if(jogador.x>0)
+                        jogador.x -= 1;
+                }
+                parado = false;
+                jogador.direcao = 4;
+            }
+            if(teclas.tecla68 || teclas.tecla39){//tecla D ou seta pra direita
+                for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){//em vez de adicionar a velocidade tudo de uma vez, faremos um loop, adicionando uma por uma por segurança, para nao extrapolar o canvas
+                    if(jogador.x < w-50)
+                        jogador.x += 1;
+                }
+                parado = false;
+                jogador.direcao = 2;
+            }
+            if(teclas.tecla87 || teclas.tecla38){//tecla W ou seta pra cima
+                for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
+                    if(jogador.y > 0)
+                        jogador.y -= 1;
+                }
+                parado = false;
+                jogador.direcao = 1;
+
+            }
+            if(teclas.tecla83 || teclas.tecla40){//tecla S ou seta pra baixo
+                for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
+                    if(jogador.y < h-85)
+                        jogador.y += 1;
+                }
+                parado = false;
+                jogador.direcao = 3;
+
+            }
+
+            switch(jogador.direcao) {
+                case 1:
+                    jogador.imagem = (Math.round(contar/10)%2 || parado) ? "documentos/imagens/norte1.png" : "documentos/imagens/norte2.png";//a cada 2 contagens, a imagem troca para simular movimento
+                    break;
+                case 2:
+                    jogador.imagem = (Math.round(contar/10)%2 || parado) ? "documentos/imagens/leste1.png" : "documentos/imagens/leste2.png";
+                    break;
+                case 3:
+                    jogador.imagem = (Math.round(contar/10)%2 || parado) ? "documentos/imagens/sul1.png" : "documentos/imagens/sul2.png";
+                    break;
+                case 4:
+                    jogador.imagem = (Math.round(contar/10)%2 || parado) ? "documentos/imagens/oeste1.png" : "documentos/imagens/oeste2.png";
+                    break;
+            }
+        }
     };
 
     function atirar(i,x,y,j){//função para criar objetos dentro do objeto balas
@@ -50,34 +115,7 @@ function init(){
     }
 
     document.onkeydown = function(e){//escuta por algum evento de tecla
-        if(e.keyCode == 65 || e.keyCode == 37){//tecla A ou seta pra esquerda
-            for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){//a partir do round 20 se o jogador estiver com a vida inicial mais 80% do hp bonus por round, sua velocidade dobrará
-                if(jogador.x>0)
-                    jogador.x -= 1;
-            }
-            jogador.imagem = (contar%2) ? "documentos/imagens/oeste1.png" : "documentos/imagens/oeste2.png";//a cada 2 contagens, a imagem troca para simular movimento
-        }
-        if(e.keyCode == 68 || e.keyCode == 39){//tecla D ou seta pra direita
-            for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){//em vez de adicionar a velocidade tudo de uma vez, faremos um loop, adicionando uma por uma por segurança, para nao extrapolar o canvas
-                if(jogador.x < w-50)
-                    jogador.x += 1;
-            }
-            jogador.imagem = (contar%2) ? "documentos/imagens/leste1.png" : "documentos/imagens/leste2.png";
-        }
-        if(e.keyCode == 87 || e.keyCode == 38){//tecla W ou seta pra cima
-            for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
-                if(jogador.y > 0)
-                    jogador.y -= 1;
-            }
-            jogador.imagem = (contar%2) ? "documentos/imagens/norte1.png" : "documentos/imagens/norte2.png";
-        }
-        if(e.keyCode == 83 || e.keyCode == 40){//tecla S ou seta pra baixo
-            for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
-                if(jogador.y < h-85)
-                    jogador.y += 1;
-            }
-            jogador.imagem = (contar%2) ? "documentos/imagens/sul1.png" : "documentos/imagens/sul2.png";
-        }
+        teclas['tecla'+e.keyCode] = true;
         if(e.keyCode == 32){//barra de espaço
             if(jogador.vivo()){//checar se o jogador esta vivo, e em que direçao esta, para desenharmos a bala de acordo
                 atirou = true;
@@ -103,9 +141,10 @@ function init(){
             gogogo = true;//apertar R acelera a velocidade dos zumbis
     };
 
-    $(document).keyup(function(e) { 
+    $(document).keyup(function(e) {
         if(e.keyCode == 82)
             gogogo = false;
+        teclas['tecla'+e.keyCode] = false;
     });
 
     function reajustarCanvas(){//reajustar canvas ao tamanho da janela
@@ -133,7 +172,7 @@ function init(){
             var x = Math.round(6*Math.pow(1.2,i)); //fazer uma iteraçao em cada round e concatena-los para saber o numero total de zumbis no round de parametro
             nzt += x;
         }
-        c.nz = nz;	
+        c.nz = nz;
         c.vi = vi;
         c.nzt = nzt;
         return c;	//criar um objeto para armazenar e manipular informaçoes de maneira mais facil e objetiva
@@ -153,11 +192,13 @@ function init(){
     }
 
     var respawn = setInterval(function(){//um intervalo aleatorio de respawn de zumbis, se o numero total de zumbi criados, for igual ao numero total de zumbis até tal round
-        if(calcRound(roundAtual).nzt > zumbis_index && document.hasFocus() && pause === false && jogador.vivo()){//se a pagina estiver focada, e se o jogador estiver vivo
-            var k = posicaoAleat();console.log('x:',k.x,'y:',k.y);
-            zumbis(zumbis_index,k.x,k.y,'documentos/imagens/i_leste1.png');//criaçao de zumbis no objeto inimigos
-            zumbis_index += 1;	//indice de cada zumbi dentro do objeto inimigos
+        if(calcRound(roundAtual).nzt < zumbis_index || !document.hasFocus() || pause || !jogador.vivo()){//se a pagina não estiver focada, e se o jogador estiver morto
+            return;
         }
+
+        var k = posicaoAleat();console.log('x:',k.x,'y:',k.y);
+        zumbis(zumbis_index,k.x,k.y,'documentos/imagens/i_leste1.png');//criaçao de zumbis no objeto inimigos
+        zumbis_index += 1;	//indice de cada zumbi dentro do objeto inimigos
     },aleat(1000,2000));
 
     function distancia(e1,e2){//teorema de pitagoras para calcular a distancia entre dois pontos num plano cartesiano
@@ -249,6 +290,8 @@ function init(){
                 return;	//se o jogador nao clicar pra jogar denovo, pare o jogo e escreva informaçoes, senao reinicia as variaveis e começamos denovo
             else
                 resetar();
+        } else {
+            jogador.andar();
         }
 
         var img = new Image();

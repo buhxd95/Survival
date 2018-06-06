@@ -3,7 +3,7 @@ function init(){
     var canvas = $("#canvas"),
         ctx = canvas[0].getContext("2d"),
         width = canvas[0].width,
-        height = canvas[0].height, teste,
+        height = canvas[0].height,
         jogo = {
             balas:{},
             inimigos:{},
@@ -27,7 +27,8 @@ function init(){
                 87: false,
                 38: false,
                 83: false,
-                40: false
+                40: false,
+                16: false
             },
             jogador:{
                 x: Math.round(width/2-25),
@@ -44,23 +45,38 @@ function init(){
 
                 if(jogo.teclas[65] || jogo.teclas[37])//tecla A ou seta pra esquerda
                     for(var a = 0;a<velocidade;a++)
-                        if(eu.x>0)
-                            movimento("oeste",eu,1,3);
-
+                        if(eu.x>0){
+                            if(jogo.teclas[16] === false)
+                                movimento("oeste",eu,1,3);
+                            else
+                                movimento("leste",eu,1,3);
+                        }
                 if(jogo.teclas[68] || jogo.teclas[39])//tecla D ou seta pra direita
                     for(var e = 0;e<velocidade;e++)
-                        if(eu.x < width-50)
-                            movimento("leste",eu,1,1);
+                        if(eu.x < width-50){
+                            if(jogo.teclas[16] === false)
+                                movimento("leste",eu,1,1);
+                            else
+                                movimento("oeste",eu,1,1);
+                        }
 
                 if(jogo.teclas[87] || jogo.teclas[38])//tecla W ou seta pra cima
                     for(var i = 0;i<velocidade;i++)
-                        if(eu.y > 0)
-                            movimento("norte",eu,1,4);
+                        if(eu.y > 0){
+                            if(jogo.teclas[16] === false)
+                                movimento("norte",eu,1,4);
+                            else
+                                movimento("sul",eu,1,4);
+                        }
 
                 if(jogo.teclas[83] || jogo.teclas[40])//tecla S ou seta pra baixo
                     for(var o = 0;o<velocidade;o++)
-                        if(eu.y < height-85)
-                            movimento("sul",eu,1,2);
+                        if(eu.y < height-85){
+                            if(jogo.teclas[16] === false)
+                                movimento("sul",eu,1,2);
+                            else
+                                movimento("norte",eu,1,2);
+                        }
             }
         },
         eu = jogo.jogador,
@@ -132,7 +148,7 @@ function init(){
             jogo.sair = true;
         if(event.keyCode == 71)//apertar G reinicia o jogo
             jogo.reset = true;
-        if(event.keyCode == 82 && event.originalEvent.repeat != undefined)
+        if(event.keyCode == 82/* && event.originalEvent.repeat != undefined*/)
             jogo.gogogo = true;//apertar R acelera a velocidade dos zumbis
         if(event.keyCode == 82 && jogo.pause)
             jogo.reload = true;
@@ -147,20 +163,20 @@ function init(){
     });
 
     $(window).on("resize", function(){
-        canvas[0].width = window.innerWidth - 4;	//existe uma diferença de 4px entre o tamanho da janela e o tamanho maximo do canvas
+        canvas[0].width = window.innerWidth - 4;    //existe uma diferença de 4px entre o tamanho da janela e o tamanho maximo do canvas
         canvas[0].height = window.innerHeight - 4;
         width = canvas[0].width;
         height = canvas[0].height;
     }).trigger("resize");
 
-    function calcRound(round){		//calcular informaçoes sobre mudanças em cada round
+    function calcRound(round){//calcular informaçoes sobre mudanças em cada round
         var zumbis = Math.round(6*Math.pow(1.06,round-1));
         var vida = Math.round(50*Math.pow(1.06,round-1));
         var zumbisTotais = 0;
         for(var i =0 ;i < round;i++)
             zumbisTotais += Math.round(6*Math.pow(1.06,i));
         return {zumbis, vida, zumbisTotais};
-    }
+}
 
     function posicaoAleat(){//calcular uma posição aleatorio de respawn do zumbi fora do canvas, para nao "brotarem"
         var x = aleat(-100,width+100), z = [-180,width+180], y;
@@ -184,9 +200,9 @@ function init(){
             respawn();
         },aleatorio);
         window.progresso = function(modo){
-			if(modo == "reset")
+            if(modo == "reset")
                 jogo = JSON.parse(sessionStorage.getItem('reset'));
-			if(modo == "load")
+            if(modo == "load")
                 jogo = JSON.parse(localStorage.getItem('save'));
             eu = jogo.jogador;
             balas = jogo.balas;
@@ -206,10 +222,10 @@ function init(){
             mapay = 0;
             mapax += 100;
         }
-    }
+  }
 
     function desenhar(){
-        if(jogo.sair && (!jogador.vivo() || jogo.pause)){	//se o jogador apertar Esc quando morto ou pausado
+        if(jogo.sair && (!jogador.vivo() || jogo.pause)){   //se o jogador apertar Esc quando morto ou pausado
             jogo.sair = false;
             var confirmar = confirm("Tem certeza que deseja sair?");
             if(confirmar){
@@ -261,7 +277,7 @@ function init(){
             escrever("white","20px",'Aperte Esc para sair',180,20);
             escrever("white","20px",'Aperte G para reiniciar',180,50);
             if(!jogo.reset)
-                return;	//se o jogador nao clicar pra jogar denovo, pare o jogo e escreva informaçoes, senao reinicia as variaveis e começamos denovo
+                return; //se o jogador nao clicar pra jogar denovo, pare o jogo e escreva informaçoes, senao reinicia as variaveis e começamos denovo
             else
                 jogo = JSON.parse(sessionStorage.getItem('reset'));//JSON.parse(sessionStorage.getItem(jogo));
         } else
@@ -275,11 +291,11 @@ function init(){
 
         $.each(balas,function(i){
             if(balas[i].x < width && balas[i].imagem.indexOf("leste") != -1)
-                atirar("leste",balas[i], 7, 1, 1);				//velocidade de 20 a cada desenhar
+                atirar("leste",balas[i], 7, 1, 1);              //velocidade de 20 a cada desenhar
             if(balas[i].y < height && balas[i].imagem.indexOf("sul") != -1)
                 atirar("sul",balas[i], 1, 7, 2);
             if(balas[i].x > 0 && balas[i].imagem.indexOf("oeste") != -1)//checar se as balas estao dentro do canvas, e atirar de acordo com a posiçao do boneco
-                atirar("oeste",balas[i], 7, 1, 3);						//criar balas com cada indice dentro do objeto
+                atirar("oeste",balas[i], 7, 1, 3);                      //criar balas com cada indice dentro do objeto
             if(balas[i].y > 0 && balas[i].imagem.indexOf("norte") != -1)
                 atirar("norte",balas[i], 1, 7, 4);
             if(foraDoCanvas(balas[i]))
@@ -312,7 +328,7 @@ function init(){
                 eu.hp -= (jogo.round>=20) ? (0.2) : (0.1); //a partir do round 20, a força do zumbi dobra
 
             if((jogo.contar - zumbi[i].nasceu) >= poof){
-                var pos = posicaoAleat();console.log(true,poof);
+                var pos = posicaoAleat();
                 zumbi[i].x = pos.x;
                 zumbi[i].y = pos.y;
                 zumbi[i].nasceu = jogo.contar;
@@ -328,7 +344,7 @@ function init(){
                 else if(zumbi[i].y > eu.y  && (zumbi[i].y !== eu.y))
                     movimento("i_norte",zumbi[i],velocidade,4);
             }
-            else if(jogo.round>=20 || jogo.gogogo){	//se é maior que 20, o zumbi anda na diagonal
+            else if(jogo.round>=20 || jogo.gogogo){ //se é maior que 20, o zumbi anda na diagonal
                 if(zumbi[i].x < eu.x && (zumbi[i].x !== eu.x))
                     movimento("i_leste",zumbi[i],1,1);
                 if(zumbi[i].y < eu.y  && (zumbi[i].y !== eu.y))
@@ -344,7 +360,7 @@ function init(){
         escrever(cor,"20px","HP: "+Math.round(eu.hp),5,20);
         escrever("#FF0000","75px",jogo.round,5,height-10);
 
-        if(jogo.info && !jogo.pause){	//informaçoes adicionais
+        if(jogo.info && !jogo.pause){    //informaçoes adicionais
             escrever("red","20px","Kills: "+jogo.kills,5,50);
             escrever("red","20px","Kills faltando: "+(calcRound(jogo.round).zumbisTotais-jogo.kills),5,80);
         }

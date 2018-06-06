@@ -1,29 +1,31 @@
 ﻿<html>
+
 <head>
     <link href="documentos/css/estilo.css" rel="stylesheet" type="text/css">
-	<link rel="shortcut icon" type="image/x-icon" href="documentos/imagens/icon.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="documentos/imagens/icon.png" />
     <meta charset="UTF-8">
-	<title>Survivor</title>
+    <title>Survivor</title>
 </head>
 
 <body>
+    <div class="cab"></div>
 
-<div class="cab">
-</div>
+    <ul class="menu">
+        <li><a href="geral.html">Geral</a></li>
+        <li><a class="ativo" href="jogar.html">Jogar</a></li>
+        <li><a href="codigo.html">Código</a></li>
+    </ul>
 
-<ul class="menu">
-  <li><a href="geral.html">Geral</a></li>
-  <li><a class="ativo" href="jogar.html">Jogar</a></li>
-  <li><a href="codigo.html">Código</a></li>
-</ul>
+    <div class="container">
+        <img src="documentos/imagens/background.png" style="width:100%">
+        <button id="jogar">Jogar</button>
+    </div>
 
-<div class="container">
-	<img src="documentos/imagens/background.png" style="width:100%">
-	<button id="jogar">Jogar</button>
-</div>
-<img id="round" src="documentos/imagens/Round.png" >
+    <img id="round" src="documentos/imagens/Round.png" alt="Pré-Visualização do jogo">
+
+    <script type="text/javascript" src="documentos/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="documentos/js/jogo.js"></script>
+    <script type="text/javascript" src="documentos/js/onclick.js"></script>
 </body>
 
-<script type="text/javascript" src="documentos/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="documentos/js/jogo.js"></script>
-<script type="text/javascript" src="documentos/js/onclick.js"></script>
+</html>

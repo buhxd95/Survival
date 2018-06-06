@@ -1,108 +1,106 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link href="documentos/css/estilo.css" rel="stylesheet" type="text/css">
-	<link href="documentos/css/default.css" rel="stylesheet" type="text/css">
-	<link rel="shortcut icon" type="image/x-icon" href="documentos/imagens/icon.png"/>
+    <link href="documentos/css/default.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" type="image/x-icon" href="documentos/imagens/icon.png" />
     <meta charset="UTF-8">
-   <title>Survivor</title>
+    <title>Survivor</title>
 </head>
 
-<script src="documentos/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<body>
 
-<div class="cab">
-</div>
+    <div class="cab">
+    </div>
 
-<ul class="menu">
-  <li><a href="geral.html">Geral</a></li>
-  <li><a href="jogar.html">Jogar</a></li>
-  <li><a class="ativo" href="codigo.html">Código</a></li>
-</ul>
+    <ul class="menu">
+        <li><a href="geral.html">Geral</a></li>
+        <li><a href="jogar.html">Jogar</a></li>
+        <li><a class="ativo" href="codigo.html">Código</a></li>
+    </ul>
 
-<div>
-<pre><code class="code">
+    <div>
+        <pre><code class="code">
 onclick.js
-					
-					"QUANDO -- ESTIVER NO FINAL DE UM COMENTÁRIO, SIGNIFICA QUE É MULTILINHA"
 
+                    "QUANDO -- ESTIVER NO FINAL DE UM COMENTÁRIO, SIGNIFICA QUE É MULTILINHA"
 
-var jogar = $('#jogar')[0];	
+var jogar = $('#jogar')[0];    
 
 document.addEventListener("keydown", function(evento) {
-	if(evento.keyCode == 13 && !$('#canvas').length)	//se o jogador aperta ENTER e o canvas não existir, iniciar o jogo
-  		jogar.click();	//clique no botão do jogo
+    if(evento.keyCode == 13 && !$('#canvas').length)    //se o jogador aperta ENTER e o canvas não existir, iniciar o jogo
+          jogar.click();    //clique no botão do jogo
 });
 
 jogar.onclick = function(){
-	$('body').children().not('script:eq(1)').hide(800);	//animation de esconder o html
-	$('body')[0].style = 'margin:1px';
-	var canv = $('&lt;canvas id="canvas" style="border:1px solid black;"&gt;&lt;/canvas&gt;');
-	canv[0].width = 50;
-	canv[0].height = 50; //tamanho inicial do canvas
-	$('body').append(canv);	//'grudar' canvas no corpo da pagina
-	var mw = window.innerWidth - 4;
-	var mh = window.innerHeight - 4;	//descobrir qual o tamanho maximo que o canvas pode ser na navegador do jogador
-	var parar = false;	//parar de desenhar o canvas, quando a tela estiver toda preenchida
-	var script = document.createElement("script");
+    $('body').children().not('script:eq(1)').hide(800);    //animation de esconder o html
+    $('body')[0].style = 'margin:1px';
+    var canv = $('&lt;canvas id="canvas" style="border:1px solid black;"&gt;&lt;/canvas&gt;');
+    canv[0].width = 50;
+    canv[0].height = 50; //tamanho inicial do canvas
+    $('body').append(canv);    //'grudar' canvas no corpo da pagina
+    var mw = window.innerWidth - 4;
+    var mh = window.innerHeight - 4;    //descobrir qual o tamanho maximo que o canvas pode ser na navegador do jogador
+    var parar = false;    //parar de desenhar o canvas, quando a tela estiver toda preenchida
+    var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = "documentos/js/jogo.js";	//importar script do jogo
+    script.src = "documentos/js/jogo.js";    //importar script do jogo
 
-	var s = setInterval(function(){	//intervalo que 'desenha' o canvas em tempo real
+    var s = setInterval(function(){    //intervalo que 'desenha' o canvas em tempo real
 
-		if(canv[0].width < mw)
-			canv[0].width += mw/mh+1;	//desenhar a largura no ratio largura/altura para as duas -- 
-		else					//dimensões chegarem exatamente ao maximo da tela ao mesmo tempo
-			parar = true;	//terminou de desenhar
-		if(canv[0].height < mh)
-			canv[0].height += 1;
-		else if(parar){	//quando parar, 'grudar' o script do jogo e cancelar o intervalo
-			$("head")[0].appendChild(script);
-			clearInterval(s);
-		}
-	},1);
+        if(canv[0].width < mw)
+            canv[0].width += mw/mh+1;    //desenhar a largura no ratio largura/altura para as duas -- 
+        else                    //dimensões chegarem exatamente ao maximo da tela ao mesmo tempo
+            parar = true;    //terminou de desenhar
+        if(canv[0].height < mh)
+            canv[0].height += 1;
+        else if(parar){//quando parar, 'grudar' o script do jogo e cancelar o intervalo
+            $("head")[0].appendChild(script);
+            clearInterval(s);
+        }
+    },1);
     return false;
 }
 </code></pre>
-<pre><code class="code">
+        <pre><code class="code">
 jogo.js
 
-					"QUANDO -- ESTIVER NO FINAL DE UM COMENTÁRIO, SIGNIFICA QUE É MULTILINHA"
-
+                    "QUANDO -- ESTIVER NO FINAL DE UM COMENTÁRIO, SIGNIFICA QUE É MULTILINHA"
 
 function init(){         //colocar o codigo inteiro dentro de uma função pra isolar as variaveis e funções da pagina html
 
     document.body.setAttribute("bgcolor","black"); //quando o jogo estiver rodando, tornar o fundo da pagina preto
     var canvas = $("#canvas");
     var ctx = canvas[0].getContext("2d");
-    var w = canvas[0].width;		//gravar a largura e altura do canvas para mais facil acesso
-    var h = canvas[0].height;		
+    var w = canvas[0].width;        //gravar a largura e altura do canvas para mais facil acesso
+    var h = canvas[0].height;
     var inicio = Date.now();     //pegar tempo inicial do jogo
-    var fim = false;					//pegar o tempo final do jogo
-    var balas = {};			//objetos para balas e zumbis, para mais fácil acesso deleta-los caso colisão
+    var fim = false;                    //pegar o tempo final do jogo
+    var balas = {};            //objetos para balas e zumbis, para mais fácil acesso deleta-los caso colisão
     var inimigos = {};
-    var atirou = false;	//se atirar apertando espaço, um evento será disparado fazendo que receba true para depois ser avaliado na função desenhar
+    var atirou = false;    //se atirar apertando espaço, um evento será disparado fazendo que receba true para depois ser avaliado na função desenhar
     var bala_index = 0;
-    var zumbis_index = 0;	//quando balas e zumbis forem criados, um contador de zumbis é necessário
-    var contar = 0;			//contador para saber quantas vezes a função desenhar foi chamada
-    var roundAtual = 1;		//round atual do jogador que aumenta cada vez que ele mata o número necessário de zumbis
-    var zumbisMortos = 0;	//contador de zumbis já mortos
-    var pause = false;		//variavel para a ocasião do jogador pausar o jogo apertando P
-    var jogarNovamente = false;		//reiniciar o jogo no menu pausa, e no menu pós-jogo apertando G
-    var gogogo = false;			//para os apressadinhos, que acham que a velocidade dos zumbis está muito lenta, segurem R
-    var hpPorRound = 5;			//hp dado gratuitamente ao jogador a cada round que ele alcançar
-    var sair = false;			//sair do jogo no menu pausa, e no menu pós-jogo apertando Esc
-    var info = false;			//apertar Y para mostrar informações adicionais da partida
+    var zumbis_index = 0;    //quando balas e zumbis forem criados, um contador de zumbis é necessário
+    var contar = 0;            //contador para saber quantas vezes a função desenhar foi chamada
+    var roundAtual = 1;        //round atual do jogador que aumenta cada vez que ele mata o número necessário de zumbis
+    var zumbisMortos = 0;    //contador de zumbis já mortos
+    var pause = false;        //variavel para a ocasião do jogador pausar o jogo apertando P
+    var jogarNovamente = false;        //reiniciar o jogo no menu pausa, e no menu pós-jogo apertando G
+    var gogogo = false;            //para os apressadinhos, que acham que a velocidade dos zumbis está muito lenta, segurem R
+    var hpPorRound = 5;            //hp dado gratuitamente ao jogador a cada round que ele alcançar
+    var sair = false;            //sair do jogo no menu pausa, e no menu pós-jogo apertando Esc
+    var info = false;            //apertar Y para mostrar informações adicionais da partida
 
     var jogador = { //objeto jogador
-        x: Math.round(w/2-25),		//posição inicial relativa a metade do canvas menos metade do tamanho da imagem
+        x: Math.round(w/2-25),        //posição inicial relativa a metade do canvas menos metade do tamanho da imagem
         y: Math.round(h/2-50),
         imagem: "imagens/leste1.png",
         hp:100,
-        vivo: function(){return this.hp>0  ? true : false;}		//checar se está vivo
+        vivo: function(){return this.hp>0  ? true : false;}        //checar se está vivo
     };
-	
-	function atirar(i,x,y,j){//função para criar objetos dentro do objeto balas, criaçao de balas
+
+    function atirar(i,x,y,j){//função para criar objetos dentro do objeto balas, criaçao de balas
         a = {
             y:y,
             x:x,
@@ -122,41 +120,41 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
         };
         inimigos[i] = a;
     }
-	
-	document.onkeydown = function(e){	//escuta por algum evento de tecla
-        if(e.keyCode == 65 || e.keyCode == 37){		//tecla A ou seta pra esquerda
+
+    document.onkeydown = function(e){    //escuta por algum evento de tecla
+        if(e.keyCode == 65 || e.keyCode == 37){        //tecla A ou seta pra esquerda
             for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
-                if(jogador.x>0)				//a partir do round 20 se o jogador estiver com a vida inicial --
-                    jogador.x -= 1;			//mais 80% do hp bonus por round, sua velocidade dobrará
+                if(jogador.x>0)                //a partir do round 20 se o jogador estiver com a vida inicial --
+                    jogador.x -= 1;            //mais 80% do hp bonus por round, sua velocidade dobrará
             }
             jogador.imagem = (contar%2) ? "imagens/oeste1.png" : "imagens/oeste2.png";//a cada 2 contagens, a imagem troca para simular movimento
         }
-        if(e.keyCode == 68 || e.keyCode == 39){		//tecla D ou seta pra direita
+        if(e.keyCode == 68 || e.keyCode == 39){        //tecla D ou seta pra direita
             for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
                 if(jogador.x < w-50)          //em vez de adicionar a velocidade tudo de uma vez, faremos um loop, --
                     jogador.x += 1;          //adicionando uma por uma por segurança, para nao extrapolar o canvas
             }
             jogador.imagem = (contar%2) ? "imagens/leste1.png" : "imagens/leste2.png";
         }
-        if(e.keyCode == 87 || e.keyCode == 38){		//tecla W ou seta pra cima
+        if(e.keyCode == 87 || e.keyCode == 38){        //tecla W ou seta pra cima
             for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
                 if(jogador.y > 0)
                     jogador.y -= 1;
             }
             jogador.imagem = (contar%2) ? "imagens/norte1.png" : "imagens/norte2.png";
         }
-        if(e.keyCode == 83 || e.keyCode == 40){		//tecla S ou seta pra baixo
+        if(e.keyCode == 83 || e.keyCode == 40){        //tecla S ou seta pra baixo
             for(i=0;i<(roundAtual>=20 && jogador.hp>=100+hpPorRound*roundAtual*0.8 ? 20 : 10);i++){
                 if(jogador.y < h-85)
                     jogador.y += 1;
             }
             jogador.imagem = (contar%2) ? "imagens/sul1.png" : "imagens/sul2.png";
         }
-        if(e.keyCode == 32){		//barra de espaço
-            if(jogador.vivo()){		//checar se o jogador esta vivo, e em que direçao esta, para desenharmos a bala de acordo
-                atirou = true;		//uso da variavel atirar posteriormente na função desenhar
+        if(e.keyCode == 32){        //barra de espaço
+            if(jogador.vivo()){        //checar se o jogador esta vivo, e em que direçao esta, para desenharmos a bala de acordo
+                atirou = true;        //uso da variavel atirar posteriormente na função desenhar
                 if(jogador.imagem.indexOf("oeste") != -1)
-                    atirar(bala_index,jogador.x-7,jogador.y+27,jogador.imagem);	//desenhar direção e sentido da bala
+                    atirar(bala_index,jogador.x-7,jogador.y+27,jogador.imagem);    //desenhar direção e sentido da bala
                 if(jogador.imagem.indexOf("leste") != -1)
                     atirar(bala_index,jogador.x+50,jogador.y+27,jogador.imagem);
                 if(jogador.imagem.indexOf("norte") != -1)
@@ -165,55 +163,55 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
                     atirar(bala_index,jogador.x+21,jogador.y+30,jogador.imagem);
             }
         }
-        if(e.keyCode == 80)	//tecla P para pausar
+        if(e.keyCode == 80)    //tecla P para pausar
             pause = !pause;
-        if(e.keyCode == 89)	//tecla Y para mais info
+        if(e.keyCode == 89)    //tecla Y para mais info
             info = !info;
-        if(e.keyCode == 27 && (!jogador.vivo() || pause))	//na tela de game over e pausa, apertar Esc para sair
+        if(e.keyCode == 27 && (!jogador.vivo() || pause))    //na tela de game over e pausa, apertar Esc para sair
             sair = true;
-        if(e.keyCode == 71)	//apertar espaço reinicia o jogo
+        if(e.keyCode == 71)    //apertar espaço reinicia o jogo
             jogarNovamente = true;
-        if(e.keyCode == 82 && e.repeat != undefined)	//apertar R acelera a velocidade dos zumbis, checar se está segurando a tecla
+        if(e.keyCode == 82 && e.repeat != undefined)    //apertar R acelera a velocidade dos zumbis, checar se está segurando a tecla
             gogogo = true;
     };
-	
-	$(document).keyup(function(e) {	//checar quando o jogador soltou a tecla R para ajustar a velocidade dos zumbis de acordo
+
+    $(document).keyup(function(e) {    //checar quando o jogador soltou a tecla R para ajustar a velocidade dos zumbis de acordo
         if(e.keyCode == 82)
             gogogo = false;
     });
 
-    function reajustarCanvas(){	//reajustar canvas ao tamanho da janela
-        canvas[0].width = window.innerWidth - 4		//existe uma diferença de 4px entre o tamanho da janela e o tamanho maximo do canvas
+    function reajustarCanvas(){    //reajustar canvas ao tamanho da janela
+        canvas[0].width = window.innerWidth - 4        //existe uma diferença de 4px entre o tamanho da janela e o tamanho maximo do canvas
         canvas[0].height = window.innerHeight - 4;
         w = canvas[0].width;
         h = canvas[0].height;
     }
-    reajustarCanvas();	//pedimos pra reajustar o canvas imediatamente
+    reajustarCanvas();    //pedimos pra reajustar o canvas imediatamente
 
     window.addEventListener("resize", function(){   //pedir ao navegador para ouvir qualquer mudança no tamanho da janela --
-        reajustarCanvas();			   //e aplicar a função acima caso verdadeiro
+        reajustarCanvas();               //e aplicar a função acima caso verdadeiro
     });
 
-    function aleat(max, min){	//calcular um numero aleatorio entre 2 numeros quaisquer
+    function aleat(max, min){    //calcular um numero aleatorio entre 2 numeros quaisquer
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-	
-	function calcRound(round){	//calcular informaçoes sobre mudanças em cada round
+
+    function calcRound(round){    //calcular informaçoes sobre mudanças em cada round
         var nz = Math.round(6*Math.pow(1.2,round-1)); //numero de zumbis no round de parametro, incremento de 20% por round
         var vi = Math.round(50*Math.pow(1.15,round-1));//hp dos zumbis no round de parametro, incremento de 15% por round
         var nzt = 0;
         var c = {};
         for(i=0;i < round;i++){
             var x = Math.round(6*Math.pow(1.2,i)); //fazer uma iteraçao em cada round e concatena-los --
-            nzt += x;		 		  //para saber o numero total de zumbis no round de parametro
+            nzt += x;                   //para saber o numero total de zumbis no round de parametro
         }
         c.nz = nz;
         c.vi = vi;
         c.nzt = nzt;
-        return c;	//criar um objeto para armazenar e manipular informaçoes de maneira mais facil e objetiva
+        return c;    //criar um objeto para armazenar e manipular informaçoes de maneira mais facil e objetiva
     }
 
-    function posicaoAleat(){	//calcular uma posição aleatorio de respawn do zumbi fora do canvas, para nao "brotarem"
+    function posicaoAleat(){    //calcular uma posição aleatorio de respawn do zumbi fora do canvas, para nao "brotarem"
         var x = aleat(-100,w+100);
         var z = [-180,w+180];
         if(-50< x <0 || w < x < w+50 || 0 < x < w)
@@ -224,25 +222,25 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
         pos.y = y;
         return pos; //após todos os calculos, retorna um objeto com x e y
     }
-	
-	var respawn = setInterval(function(){//um intervalo aleatorio de respawn de zumbis, se o numero total de zumbi criados, for igual ao numero total --
-        if(calcRound(roundAtual).nzt > zumbis_index && document.hasFocus() && pause === false && jogador.vivo()){// de zumbis até tal round, se a --
-            var k = posicaoAleat();					//pagina estiver focada, e se o jogador estiver vivo
-            zumbis(zumbis_index,k.x,k.y,'documentos/imagens/i_leste1.png');	//criaçao de zumbis no objeto inimigos
-            zumbis_index += 1;	//indice de cada zumbi dentro do objeto inimigos
-        }
-    },aleat(1000,2000));	//repetição aleatório do intervalo
 
-    function distancia(e1,e2){	//teorema de pitagoras para calcular a distancia entre dois pontos num plano cartesiano
+    var respawn = setInterval(function(){//um intervalo aleatorio de respawn de zumbis, se o numero total de zumbi criados, for igual ao numero total --
+        if(calcRound(roundAtual).nzt > zumbis_index && document.hasFocus() && pause === false && jogador.vivo()){// de zumbis até tal round, se a --
+            var k = posicaoAleat();                    //pagina estiver focada, e se o jogador estiver vivo
+            zumbis(zumbis_index,k.x,k.y,'documentos/imagens/i_leste1.png');    //criaçao de zumbis no objeto inimigos
+            zumbis_index += 1;    //indice de cada zumbi dentro do objeto inimigos
+        }
+    },aleat(1000,2000));    //repetição aleatório do intervalo
+
+    function distancia(e1,e2){    //teorema de pitagoras para calcular a distancia entre dois pontos num plano cartesiano
         return Math.sqrt(Math.pow((e1.x - e2.x),2) + Math.pow((e1.y - e2.y),2));
     }
 
-    function desenharFundo(){	//desenhar o fundo de concreto em que o personagem anda
+    function desenharFundo(){    //desenhar o fundo de concreto em que o personagem anda
         var rua = new Image(100,100);
         rua.src = "documentos/imagens/concreto.jpg";
         var mapax = 0;
         var mapay = 0;
-        for(i=0;i < w/100;i++){	//iteraçoes para desenhar os blocos em cada parte do mapa de 100 em 100 x e y: (100,100) (100,200) (200,200) ...
+        for(i=0;i < w/100;i++){    //iteraçoes para desenhar os blocos em cada parte do mapa de 100 em 100 x e y: (100,100) (100,200) (200,200) ...
             for(j=0;j < h/100;j++){
                 ctx.drawImage(rua,mapax,mapay);
                 mapay += 100;
@@ -252,7 +250,7 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
         }
     }
 
-    function resetar(){	//resetar todos as variaveis e objetos necessárias do ultimo jogo, para começar um novo
+    function resetar(){    //resetar todos as variaveis e objetos necessárias do ultimo jogo, para começar um novo
         balas = {};
         inimigos = {};
         pause = false;
@@ -272,12 +270,12 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
         };
         jogarNovamente = false;
     }
-	
-	function desenhar(){
+
+    function desenhar(){
         contar++; //contador de intervalos desenhar
 
-        if(sair && (!jogador.vivo() || pause)){	//se o jogador apertar Esc quando morto
-			sair = false;
+        if(sair && (!jogador.vivo() || pause)){    //se o jogador apertar Esc quando morto
+            sair = false;
              var confirmar = confirm("Tem certeza que deseja sair?");
                 if(confirmar){
                     resetar();
@@ -289,20 +287,20 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
                 }
         }
 
-        ctx.font = '20px Times New Roman';	//fonte padrão para escrever em branco no canvas
+        ctx.font = '20px Times New Roman';    //fonte padrão para escrever em branco no canvas
         ctx.fillStyle = 'white';
         if((pause || !document.hasFocus()) && jogador.vivo()){//janela sem foco ou botao de pausa pressionado, vai parar o jogo se jogador vivo
             ctx.fillText("Jogo Pausado",w/2-50,h/2-20);
-            ctx.fillText('Aperte Esc para sair',80,20);	//escrever informações no pause
-            ctx.fillText('Aperte G para reiniciar',80,50);	
-            if(jogarNovamente){	//se jogar optar por reiniciar o jogo
-                jogarNovamente = false;	//precisa ser falso para nao dar loopings infinitos de prompt de comando
-                var confirmar = confirm("Tem certeza que deseja reiniciar?");	//prompt de comando
-                if(confirmar)	//caso confirmou resete
+            ctx.fillText('Aperte Esc para sair',80,20);    //escrever informações no pause
+            ctx.fillText('Aperte G para reiniciar',80,50);    
+            if(jogarNovamente){    //se jogar optar por reiniciar o jogo
+                jogarNovamente = false;    //precisa ser falso para nao dar loopings infinitos de prompt de comando
+                var confirmar = confirm("Tem certeza que deseja reiniciar?");    //prompt de comando
+                if(confirmar)    //caso confirmou resete
                     resetar();
             }
             else
-                return;	//parar de desenhar no canvas
+                return;    //parar de desenhar no canvas
         }
 
         ctx.clearRect(0,0,w,h); //limpar canvas e desenhar objetos em outra posição dando impressao de movimento
@@ -319,8 +317,8 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
             ctx.fillText('Aperte G para jogar novamente',5,15);
             ctx.fillText('ou Esc para sair',5,32);
             if(!jogarNovamente)
-                return;	//se o jogador nao clicar pra jogar denovo, pare o jogo e escreva informaçoes, --
-            else	//senao reinicia as variaveis e começamos denovo
+                return;    //se o jogador nao clicar pra jogar denovo, pare o jogo e escreva informaçoes, --
+            else    //senao reinicia as variaveis e começamos denovo
                 resetar();
         }
 
@@ -336,9 +334,9 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
         $.each(balas,function(i){//fazer um loop dentro dos indices de balas
             ctx.fillStyle = 'black';
             if(balas[i].x > 0 && balas[i].direcao.indexOf("oeste") != -1){//checar se as balas estao dentro do canvas, --
-                ctx.beginPath();					 //e atirar de acordo com a posiçao do boneco
-                ctx.fillRect(balas[i].x, balas[i].y, 7, 0.65);		//criar balas com cada indice dentro do objeto
-                balas[i].x -= 20;		//velocidade de 20 a cada desenhar
+                ctx.beginPath();                     //e atirar de acordo com a posiçao do boneco
+                ctx.fillRect(balas[i].x, balas[i].y, 7, 0.65);        //criar balas com cada indice dentro do objeto
+                balas[i].x -= 20;        //velocidade de 20 a cada desenhar
             }
             if(balas[i].x < w && balas[i].direcao.indexOf("leste") != -1){
                 ctx.beginPath();
@@ -358,18 +356,18 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
             $.each(inimigos,function(z){//loop dentro de loop, para usar dois indices (i,z) para checar colisao de balas em zumbis
                 if(balas[i] !== undefined){//se existe balas dentro do objeto
                     if(balas[i].x > 0 && balas[i].x < w && balas[i].y > 0 && balas[i].y < h){//checar se balas estao dentro do canvas, --
-											    //pra nao danificar zumbis fora da tela
+                                                //pra nao danificar zumbis fora da tela
                         if(balas[i].x > inimigos[z].x+8 && balas[i].x < inimigos[z].x+40 && balas[i].y > inimigos[z].y && balas[i].y+2 < inimigos[z].y+83){
-							//checando colisao entre os dois elementos
+                            //checando colisao entre os dois elementos
                             inimigos[z].hp -= (roundAtual>=15 && jogador.hp>=100+hpPorRound*14) ? (20) : (10);//se há colisao, zumbi perderá hp. --
-						//No round 15, se o jogador tiver 100% da vida padrao + bonus, ganhara o dobro de dano em zumbis
-                            delete balas[i];		//deletar balas pra nao matar multiplos zumbis enfileirados
-                            if(inimigos[z].hp <= 0){	//checar hp do inimigo para ver se deve morrer
-                                delete inimigos[z];		//deletar o que não tem hp
-                                zumbisMortos++;			//contador de zumbis mortos
-                                if(calcRound(roundAtual).nzt == zumbisMortos){	//numero de zumbis mortos deve ser igual ao numero de zumbis totais --
-                                    roundAtual++;				//até aquele round, para poder avançar ao proximo round
-                                    jogador.hp += hpPorRound;	//jogador ganha um bonus de hp, por sobreviver aquele round
+                        //No round 15, se o jogador tiver 100% da vida padrao + bonus, ganhara o dobro de dano em zumbis
+                            delete balas[i];        //deletar balas pra nao matar multiplos zumbis enfileirados
+                            if(inimigos[z].hp <= 0){    //checar hp do inimigo para ver se deve morrer
+                                delete inimigos[z];        //deletar o que não tem hp
+                                zumbisMortos++;            //contador de zumbis mortos
+                                if(calcRound(roundAtual).nzt == zumbisMortos){    //numero de zumbis mortos deve ser igual ao numero de zumbis totais --
+                                    roundAtual++;                //até aquele round, para poder avançar ao proximo round
+                                    jogador.hp += hpPorRound;    //jogador ganha um bonus de hp, por sobreviver aquele round
                                 }
                             }
                         }
@@ -378,16 +376,16 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
             });
         });
 
-        $.each(inimigos,function(i){	//movimento dos zumbis
+        $.each(inimigos,function(i){    //movimento dos zumbis
             var img2 = new Image();
             img2.src = inimigos[i].direcao;
-            ctx.drawImage(img2,inimigos[i].x,inimigos[i].y);	//desenhar cada um no canvas
+            ctx.drawImage(img2,inimigos[i].x,inimigos[i].y);    //desenhar cada um no canvas
 
             if(distancia(jogador,inimigos[i]) < 10) //checar se a distancia entre o jogador e o zumbi é baixa, se sim, o jogador perderá vida
                 jogador.hp -= (roundAtual>=20) ? (0.2) : (0.1); //a partir do round 20, a força do zumbi dobra
 
             if(roundAtual<20 && !gogogo){//se o round é menor que 20, o inimigo anda 1 dimensão por vez (x,y)
-                if(inimigos[i].x < jogador.x && (inimigos[i].x !== jogador.x)){	//a cada 2 contagens, a imagem troca para simular movimento
+                if(inimigos[i].x < jogador.x && (inimigos[i].x !== jogador.x)){    //a cada 2 contagens, a imagem troca para simular movimento
                     inimigos[i].direcao = (contar%2==0) ? ("documentos/imagens/i_leste1.png") : ("documentos/imagens/i_leste2.png");
                     inimigos[i].x += (roundAtual>=10) ? 0.5 : 0.25;//a partir do round 10, a velocidade dos zumbis dobra
                 }
@@ -407,7 +405,7 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
             else if(roundAtual>=20 || gogogo){//se é maior que 20, o zumbi anda na diagonal
                 if(inimigos[i].x < jogador.x && (inimigos[i].x !== jogador.x)){
                     inimigos[i].direcao = (contar%2==0) ? ("documentos/imagens/i_leste1.png") : ("documentos/imagens/i_leste2.png");
-                    inimigos[i].x += 1;	//dobrou de velocidade
+                    inimigos[i].x += 1;    //dobrou de velocidade
                 }
                 if(inimigos[i].y < jogador.y  && (inimigos[i].y !== jogador.y)){
                     inimigos[i].direcao = (contar%2==0) ? ("documentos/imagens/i_sul1.png") : ("documentos/imagens/i_sul2.png");
@@ -425,13 +423,13 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
         });
 
         switch(true){//pintar o hp de cores diferentes, só para efeito visual
-            case jogador.hp>60:			//hp maior que 60 é pintado de verde
+            case jogador.hp>60:            //hp maior que 60 é pintado de verde
                 ctx.fillStyle = '#00FF06';
                 break;
             case jogador.hp<60 && jogador.hp>25://hp entre 60 e 25 é pintado de amarelo
                 ctx.fillStyle = '#FFFF00';
                 break;
-            case jogador.hp<25:			//hp menor que 25 é pintado de vermelho
+            case jogador.hp<25:            //hp menor que 25 é pintado de vermelho
                 ctx.fillStyle = '#FF0000';
                 break;
         }
@@ -439,21 +437,25 @@ function init(){         //colocar o codigo inteiro dentro de uma função pra i
 
         ctx.fillStyle = '#FF0000';
         ctx.font = '75px Times New Roman';
-        ctx.fillText(roundAtual,5,h-10);	//escrever o round atual do jogador
-		
+        ctx.fillText(roundAtual,5,h-10);    //escrever o round atual do jogador
+
         if(info && !pause){//informaçoes adicionais fora do pause
             ctx.fillStyle = 'red';
-            ctx.fillText("Kills: "+zumbisMortos,5,50);	//calcular zumbis já mortos
-            ctx.fillText("Kills faltando: "+(calcRound(roundAtual).nzt-zumbisMortos),5,80);	//calcular o numero total de zumbis até esse round --
-        }						//menos o que o jogador ja matou até agora, pra receber quanto falta pra matar no tal round		
+            ctx.fillText("Kills: "+zumbisMortos,5,50);    //calcular zumbis já mortos
+            ctx.fillText("Kills faltando: "+(calcRound(roundAtual).nzt-zumbisMortos),5,80);    //calcular o numero total de zumbis até esse round --
+        }                        //menos o que o jogador ja matou até agora, pra receber quanto falta pra matar no tal round        
     }
 
-    setInterval(desenhar, 10);	//colocar a função em intervalo infinitamente, para que de impressão de movimento
+    setInterval(desenhar, 10);    //colocar a função em intervalo infinitamente, para que de impressão de movimento
 }
-init();	//chamar a função ao jogador clicar pra jogar
+init();    //chamar a função ao jogador clicar pra jogar
 
-	
-	
 </code></pre>
+    </div>
 
-</div>
+    <script src="documentos/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>

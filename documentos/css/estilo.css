@@ -1,5 +1,5 @@
 h6 {
-	text-align:center;
+    text-align:center;
 }
 
 .container #jogar {
@@ -9,21 +9,21 @@ h6 {
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     background-color: Transparent;
-	background-repeat:no-repeat;
+    background-repeat:no-repeat;
     font-size: 1.6vw;
     padding: 8px 15px;
     border: none;
     cursor: pointer;
     text-align: center;
-	overflow: hidden;
-	text-decoration: none;
+    overflow: hidden;
+    text-decoration: none;
 }
 
 .intro{
     width: 40%;
     text-align: justify;
-	text-indent: 50px;
-	height: 120px;
+    text-indent: 50px;
+    height: 120px;
 }
 
 .container {
@@ -32,18 +32,18 @@ h6 {
 }
 
 #jogar:focus,#jogar:active {
-	outline:0 !important;
+    outline:0 !important;
 }
 
 #round {
-	transform: translate(13%, -190%);
-	position: absolute;
-	width: 5.18vw;
-	height:3.8vw;
+    transform: translate(13%, -190%);
+    position: absolute;
+    width: 5.18vw;
+    height:3.8vw;
 }
 
 key {
-	display: inline-block;
+    display: inline-block;
     margin: 0 .1em;
     padding: .1em .6em;
     font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
@@ -56,33 +56,33 @@ key {
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
     white-space: nowrap;
-	cursor:pointer;
+    cursor:pointer;
 }
 
-.key	{
+.key    {
     position:absolute;
     width: 25%;
     top:50.4%;
 }
 
-.js	{
-	width:25%;
+.js    {
+    width:25%;
 
 }
 .key2 {
-	position:absolute;
-	width:25%;
-	left:27%;
-	top:50.4%;
+    position:absolute;
+    width:25%;
+    left:27%;
+    top:50.4%;
 }
 .cab {
-	color: white;
-	height: 75px;
+    color: white;
+    height: 75px;
     width: 100%;
-	background-image: url("../imagens/horda.gif");
-	background-position: left,top;
-	background-repeat: no-repeat;
-	background-size: 1500px;
+    background-image: url("../imagens/horda.gif");
+    background-position: left,top;
+    background-repeat: no-repeat;
+    background-size: 1500px;
 }
 
 .menu {
@@ -91,15 +91,15 @@ key {
     padding: 0;
     overflow: hidden;
     background-color: #333;
-	color:white;
+    color:white;
 }
 
 body {
-	overflow:hidden;
+    overflow:hidden;
 }
 
 li {
-	float: left;
+    float: left;
 }
 
 li a {
@@ -119,14 +119,14 @@ li a:hover:not(.ativo) {
 }
 
 .esp {
-	height: 40px;
+    height: 40px;
     width: 100%;
 }
 
 table {
     width:30%;
-	position:absolute;
-	bottom:0%;
+    position:absolute;
+    bottom:0%;
 }
 
 table, th, td {
@@ -141,5 +141,5 @@ th, td {
 }
 
 tr:hover {
-	background-color:#e6e6e6;
+    background-color:#e6e6e6;
 }
